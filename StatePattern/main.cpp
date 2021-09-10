@@ -1,6 +1,9 @@
 #include <iostream>
 #include <string>
 #include "state.h"
+#if defined _DEBUG && !defined NDEBUG
+#	include <vld.h>
+#endif
 
 
 int help()
@@ -32,9 +35,7 @@ int main( int argc,
 		title = argv[3];
 	}
 
-	Game theGame{width,
-		height,
-		title};
+	Game theGame{width, height, title};
 	bool ret = theGame.start();
 	if ( ret )
 	{

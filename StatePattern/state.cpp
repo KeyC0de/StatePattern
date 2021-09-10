@@ -6,14 +6,18 @@ Camera::Camera()
 	:
 	m_x{0},
 	m_y{0}
-{}
+{
+
+}
 
 Camera::Camera( float x,
 	float y )
 	:
-	m_x{ x },
-	m_y{ y }
-{}
+	m_x(x),
+	m_y(y)
+{
+
+}
 
 void KeyManager::update()
 {
@@ -28,12 +32,12 @@ bool MouseManager::getm_lmb() const noexcept
 
 UIManager::UIManager()
 {
-	std::cout << "UIManager ctor" << '\n';
+	std::cout << "UIManager ctor\n";
 }
 
 UIManager::~UIManager()
 {
-	std::cout << "UIManager dtor" << '\n';
+	std::cout << "UIManager dtor\n";
 }
 
 void UIManager::update() const
@@ -49,14 +53,14 @@ void UIManager::render( Graphics* gfx ) const
 
 World::World( const std::string& path )
 	:
-	m_worldPath( path )
+	m_worldPath{path}
 {
-	std::cout << "World ctor" << '\n';
+	std::cout << "World ctor\n";
 }
 
 World::~World()
 {
-	std::cout << "World dtor" << '\n';
+	std::cout << "World dtor\n";
 }
 
 void World::update() const
@@ -74,14 +78,14 @@ void World::render( Graphics* gfx ) const
 
 State::State()
 {
-//	m_pcurrentState.reset(this);
+//	m_pCurrentState.reset(this);
 	std::cout << "base state ctor\n";
 }
 
 State::~State() noexcept
 {
-	//m_pcurrentState.reset();
-	//m_pcurrentState = nullptr;
+	//m_pCurrentState.reset();
+	//m_pCurrentState = nullptr;
 	std::cout << "base state dtor\n";
 }
 //
@@ -90,11 +94,11 @@ State::~State() noexcept
 //
 //State(State&& rhs)
 //{
-//	m_pcurrentState.swap(rhs.m_pcurrentState);
+//	m_pCurrentState.swap(rhs.m_pCurrentState);
 //}
 //State& operator=(State&& rhs)
 //{
-//	m_pcurrentState.swap(rhs.m_pcurrentState);
+//	m_pCurrentState.swap(rhs.m_pCurrentState);
 //	return *this;
 //}
 
@@ -116,15 +120,15 @@ MenuState::~MenuState() noexcept
 //	: State(std::move(rhs)),
 //	m_pUiManager{ std::move(rhs.m_pUiManager) }
 //{
-//	std::cout << "MenuState mctor" << '\n';
+//	std::cout << "MenuState mctor\n";
 //}
 //MenuState& operator=(MenuState&& rhs)
 //{
 //	if (this != &rhs)
 //	{
-//		m_pcurrentState.swap(rhs.m_pcurrentState);
+//		m_pCurrentState.swap(rhs.m_pCurrentState);
 //		std::swap(m_pUiManager, rhs.m_pUiManager);
-//		std::cout << "MenuState maop" << '\n';
+//		std::cout << "MenuState maop\n";
 //	}
 //	return *this;
 //}
@@ -150,7 +154,7 @@ void MenuState::setUi( UIManager* ui )
 
 GameState::GameState()
 	:
-	m_pWorld( std::make_unique<World>( "resources/worlds/world2.txt" ) )
+	m_pWorld{std::make_unique<World>( "resources/worlds/world2.txt" )}
 {
 	std::cout << "GameState ctor\n";
 }
@@ -166,15 +170,15 @@ GameState::~GameState() noexcept
 //	: State(std::move(rhs)),
 //	m_pWorld{ std::move(rhs.m_pWorld) }
 //{
-//	std::cout << "GameState mctor" << '\n';
+//	std::cout << "GameState mctor\n";
 //}
 //GameState& operator=(GameState&& rhs)
 //{
 //	if (this != &rhs)
 //	{
-//		m_pcurrentState.swap(rhs.m_pcurrentState);
+//		m_pCurrentState.swap(rhs.m_pCurrentState);
 //		std::swap(m_pWorld, rhs.m_pWorld);
-//		std::cout << "GameState maop" << '\n';
+//		std::cout << "GameState maop\n";
 //	}
 //	return *this;
 //}
@@ -208,65 +212,64 @@ Game::Game( unsigned w,
 	unsigned h,
 	const std::string& title )
 	:
-	m_running{ false },
-	m_width{ w },
-	m_height{ h },
-	m_aspectRatio( (float)w / h ),
-	m_title{ title },
-	m_pcurrentState{std::make_unique<MenuState>()}
+	m_running{false},
+	m_width(w),
+	m_height(h),
+	m_aspectRatio((float)w / h),
+	m_title{title},
+	m_pCurrentState{std::make_unique<MenuState>()}
 {
-	std::cout << "Game ctor" << '\n';
+	std::cout << "Game ctor\n";
 }
 
 Game::~Game()
 {
-	std::cout << "Game dtor" << '\n';
+	std::cout << "Game dtor\n";
 }
 
 bool Game::start()
 {
 	m_running = true;
-	std::cout << "Game " << m_title << " starting up!" << '\n';
+	std::cout << "Game "
+		<< m_title
+		<< " starting up!\n";
 
 	return run();
 }
 
 bool Game::run()
 {
-	std::cout << "running ..." << '\n';
-	m_pcurrentState->update();
-	m_graphics.draw( m_pcurrentState.get() );
+	std::cout << "running ...\n";
+	m_pCurrentState->update();
+	m_graphics.draw( m_pCurrentState.get() );
 	std::cout << '\n';
 	
 	// changing states
 	setState( new GameState{} );
-	m_pcurrentState->update();
-	m_graphics.draw( m_pcurrentState.get() );
+	m_pCurrentState->update();
+	m_graphics.draw( m_pCurrentState.get() );
 	return stop();
 }
 
 bool Game::stop()
 {
 	m_running = false;
-	std::cout << " shutting down.." << '\n';
+	std::cout << " shutting down..\n";
 	return EXIT_SUCCESS;
 }
 
 void Game::setState( State* newState )
 {
-	//if (m_pcurrentState.get() != nullptr)
+	//if ( m_pCurrentState.get() != nullptr )
 	//{
-	//	std::cout << "whaaaa" << '\n';
-	//	m_pcurrentState.reset();
+	//	std::cout << "whaaaa\n";
+	//	m_pCurrentState.reset();
 	//}
-	//m_pcurrentState.swap(newState->m_pcurrentState);
-	//std::swap()
-	m_pcurrentState.reset( newState );
-	 //= 
-	//*this = *newState;
+	//m_pCurrentState.swap( newState->m_pCurrentState );
+	m_pCurrentState.reset( newState );
 }
 
 State* Game::getState() noexcept
 {
-	return m_pcurrentState.get();
+	return m_pCurrentState.get();
 }

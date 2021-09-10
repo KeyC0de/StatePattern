@@ -26,6 +26,7 @@ class KeyManager final
 	bool m_left;
 public:
 	explicit KeyManager() = default;
+
 	KeyManager( const KeyManager& rhs ) = delete;
 	KeyManager& operator=( const KeyManager& rhs ) = delete;
 
@@ -41,6 +42,7 @@ class MouseManager final
 	int m_y;
 public:
 	MouseManager() = default;
+
 	MouseManager( const MouseManager& rhs ) = delete;
 	MouseManager& operator=( const MouseManager& rhs ) = delete;
 
@@ -78,6 +80,7 @@ class State
 public:
 	State();
 	virtual ~State() noexcept;
+
 	virtual void update() = 0;
 	virtual void render( Graphics* gfx ) const = 0;
 };
@@ -130,15 +133,15 @@ class Game final
 	unsigned int m_height;
 	float m_aspectRatio;
 	std::string m_title;
-	std::unique_ptr<State> m_pcurrentState;
+	std::unique_ptr<State> m_pCurrentState;
 	Graphics m_graphics;
 	Camera m_camera;
 	KeyManager m_keyManager;
 	MouseManager m_mouseManager;
 public:
-
 	explicit Game( unsigned w, unsigned h, const std::string& title );
 	~Game();
+
 	Game( const Game& rhs ) = delete;
 	Game& operator=( const Game& rhs ) = delete;
 
@@ -148,6 +151,7 @@ public:
 	bool run();
 	// termination stuff
 	bool stop();
+
 	void setState( State* newState );
 	State* getState() noexcept;
 };
