@@ -128,7 +128,7 @@ public:
 // the Game class - this is the class with togglable states
 class Game final
 {
-	bool m_running;
+	bool m_bRunning;
 	unsigned int m_width;
 	unsigned int m_height;
 	float m_aspectRatio;

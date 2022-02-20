@@ -212,7 +212,7 @@ Game::Game( unsigned w,
 	unsigned h,
 	const std::string& title )
 	:
-	m_running{false},
+	m_bRunning{false},
 	m_width(w),
 	m_height(h),
 	m_aspectRatio((float)w / h),
@@ -229,7 +229,7 @@ Game::~Game()
 
 bool Game::start()
 {
-	m_running = true;
+	m_bRunning = true;
 	std::cout << "Game "
 		<< m_title
 		<< " starting up!\n";
@@ -253,7 +253,7 @@ bool Game::run()
 
 bool Game::stop()
 {
-	m_running = false;
+	m_bRunning = false;
 	std::cout << " shutting down..\n";
 	return EXIT_SUCCESS;
 }
